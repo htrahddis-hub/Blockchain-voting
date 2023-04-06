@@ -24,6 +24,7 @@ export default class Registration extends Component {
       isElStarted: false,
       isElEnded: false,
       voterCount: undefined,
+      voterGender: "male",
       voterName: "",
       voterPhone: "",
       voters: [],
@@ -33,6 +34,7 @@ export default class Registration extends Component {
         name: null,
         phone: null,
         age: 0,
+        gender: null,
         hasVoted: false,
         isVerified: false,
         isRegistered: false,
@@ -95,6 +97,7 @@ export default class Registration extends Component {
         const voter = await this.state.ElectionInstance.methods
           .voterDetails(voterAddress)
           .call();
+        const genderString = voter.gender ? "male" : "female";
         this.state.voters.push({
           address: voter.voterAddress,
           name: voter.name,
@@ -102,6 +105,8 @@ export default class Registration extends Component {
           hasVoted: voter.hasVoted,
           isVerified: voter.isVerified,
           isRegistered: voter.isRegistered,
+          age: voter.age,
+          gender: genderString,
         });
       }
       this.setState({ voters: this.state.voters });
@@ -110,6 +115,7 @@ export default class Registration extends Component {
       const voter = await this.state.ElectionInstance.methods
         .voterDetails(this.state.account)
         .call();
+      const genderString = voter.gender ? "male" : "female";
       this.setState({
         currentVoter: {
           address: voter.voterAddress,
@@ -118,6 +124,8 @@ export default class Registration extends Component {
           hasVoted: voter.hasVoted,
           isVerified: voter.isVerified,
           isRegistered: voter.isRegistered,
+          age: voter.age,
+          gender: genderString,
         },
       });
     } catch (error) {
@@ -137,12 +145,18 @@ export default class Registration extends Component {
   updateVoterAge = (event) => {
     this.setState({ voterAge: event.target.value });
   };
+  updateVoterGender = (event) => {
+    console.log(event.target.value);
+    this.setState({ voterGender: event.target.value });
+  };
   registerAsVoter = async () => {
+    const genderBoolean = this.state.voterGender === "male" ? 1 : 0;
     await this.state.ElectionInstance.methods
       .registerAsVoter(
         this.state.voterName,
         this.state.voterPhone,
-        this.state.voterAge
+        this.state.voterAge,
+        genderBoolean
       )
       .send({ from: this.state.account, gas: 1000000 });
     window.location.reload();
@@ -216,6 +230,23 @@ export default class Registration extends Component {
                         value={this.state.voterAge}
                         onChange={this.updateVoterAge}
                       />
+                    </label>
+                  </div>
+                  <div className="div-li">
+                    <label className={"label-r"}>
+                      Gender <span style={{ color: "tomato" }}>*</span>
+                      <select
+                        required
+                        className={"input-r"}
+                        placeholder=""
+                        value={this.state.voterGender}
+                        onChange={this.updateVoterGender} // the onChange and value dont work rn need to be fixed
+                      >
+                        <option selected value="male">
+                          male
+                        </option>
+                        <option value="female">female</option>
+                      </select>
                     </label>
                   </div>
                   <p className="note">
@@ -295,9 +326,18 @@ export function loadCurrentVoter(voter, isRegistered) {
             <td>{voter.phone}</td>
           </tr>
           <tr>
+            <th>Gender</th>
+            <td>{voter.gender}</td>
+          </tr>
+          <tr>
+            <th>Age</th>
+            <td>{voter.age}</td>
+          </tr>
+          <tr>
             <th>Voted</th>
             <td>{voter.hasVoted ? "True" : "False"}</td>
           </tr>
+
           <tr>
             <th>Verification</th>
             <td>{voter.isVerified ? "True" : "False"}</td>
@@ -328,6 +368,14 @@ export function loadAllVoters(voters) {
             <tr>
               <th>Phone</th>
               <td>{voter.phone}</td>
+            </tr>
+            <tr>
+              <th>Age</th>
+              <td>{voter.age}</td>
+            </tr>
+            <tr>
+              <th>Gender</th>
+              <td>{voter.gender}</td>
             </tr>
             <tr>
               <th>Voted</th>

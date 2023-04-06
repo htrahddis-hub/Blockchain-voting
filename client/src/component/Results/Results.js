@@ -83,6 +83,8 @@ export default class Result extends Component {
           slogan: candidate.slogan,
           voteCount: candidate.voteCount,
           voterAges: candidateAgeArr,
+          maleVoters: candidate.maleVoter,
+          femaleVoters: candidate.voteCount - candidate.maleVoter,
         });
       }
       console.log(this.state.candidates);

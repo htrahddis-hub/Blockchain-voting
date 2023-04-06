@@ -42,6 +42,7 @@ contract Election {
         string header;
         string slogan;
         uint256 voteCount;
+        uint256 maleVoter;
     }
 
     mapping(uint256 => Candidate) public candidateDetails;
@@ -60,7 +61,8 @@ contract Election {
             candidateId: candidateCount,
             header: _header,
             slogan: _slogan,
-            voteCount: 0
+            voteCount: 0,
+            maleVoter: 0
         });
         candidateDetails[candidateCount] = newCandidate;
         candidateCount += 1;
@@ -157,6 +159,7 @@ contract Election {
         bool isVerified;
         bool hasVoted;
         bool isRegistered;
+        bool gender;
     }
     address[] public voters; // Array of address to store address of voters
     mapping(address => Voter) public voterDetails;
@@ -165,7 +168,8 @@ contract Election {
     function registerAsVoter(
         string memory _name,
         string memory _phone,
-        int _age
+        int _age,
+        bool _gender
     ) public {
         Voter memory newVoter = Voter({
             voterAddress: msg.sender,
@@ -174,7 +178,8 @@ contract Election {
             hasVoted: false,
             isVerified: false,
             age: _age,
-            isRegistered: true
+            isRegistered: true,
+            gender: _gender
         });
         voterDetails[msg.sender] = newVoter;
         voters.push(msg.sender);
@@ -202,6 +207,8 @@ contract Election {
         candidateDetails[candidateId].voteCount += 1;
         voterDetails[msg.sender].hasVoted = true;
         candidatesVoterAges[candidateId].push(voterDetails[msg.sender].age);
+        if (voterDetails[msg.sender].gender)
+            candidateDetails[candidateId].maleVoter += 1;
     }
 
     // End election
