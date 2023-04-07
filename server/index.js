@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import auth from "./routes/routes.js";
+import face from "./routes/face.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -11,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 dotenv.config();
 
 app.use("/auth", auth);
+app.use("/kyc",face)
 
 app.get("/", (req, res) => {
   res.send("Server for Voting Blockchain system");
