@@ -10,12 +10,16 @@ dotenv.config();
 const router = express.Router();
 const unlinkAsync = promisify(fs.unlink);
 
-const api_key = "48660eb5-2b1b-405b-8cfd-3633180a7b4d";
 const url = "http://localhost";
 const port = 8000;
 
 const compreFace = new CompreFace(url, port);
-const detectionService = compreFace.initFaceDetectionService(api_key);
+const detectionService = compreFace.initFaceDetectionService(
+  process.env.APIDETECT
+);
+const verificationService = compreFace.initFaceVerificationService(
+  process.env.APIVERIFY
+);
 
 let options = {
   limit: 1,
@@ -44,8 +48,11 @@ router.post("/detect", upload.single("file"), (req, res) => {
       unlinkAsync(req.file.path);
     })
     .catch((error) => {
-      console.log(`Oops! There is problem with recognizing image ${error}`);
+      res.status(200).json({ message: error });
+      // console.log(` ${error}`);
     });
 });
+
+router.post("/verify", upload.array(), (req, res) => {});
 
 export default router;
