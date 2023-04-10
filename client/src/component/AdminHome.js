@@ -123,7 +123,7 @@ export default class AdminPage extends Component {
     if (!this.state.web3) {
       return (
         <>
-          <Navbar />
+          <NavbarAdmin />
           <center>Loading Web3, accounts, and contract...</center>
         </>
       );
@@ -138,7 +138,7 @@ export default class AdminPage extends Component {
           {!this.state.elStarted & !this.state.elEnded ? (
             <div className="container-item info">
               <center>
-                <h3>The election has not been initialize.</h3>
+                <h3>The election has not been initialized.</h3>
 
                 <p>Set up the election.</p>
               </center>

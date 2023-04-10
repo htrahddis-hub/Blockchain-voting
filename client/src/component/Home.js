@@ -126,7 +126,7 @@ export default class Home extends Component {
     }
     return (
       <>
-        {this.state.isAdmin ? <NavbarAdmin /> : <Navbar />}
+        <Navbar />
         <div className="container-main">
           <div className="container-item center-items info">
             Your Account: {this.state.account}
@@ -134,21 +134,14 @@ export default class Home extends Component {
           {!this.state.elStarted & !this.state.elEnded ? (
             <div className="container-item info">
               <center>
-                <h3>The election has not been initialize.</h3>
-                {this.state.isAdmin ? (
-                  <p>Set up the election.</p>
-                ) : (
-                  <p>Please wait..</p>
-                )}
+                <h3>The election has not been initialized.</h3>
+
+                <p>Please wait..</p>
               </center>
             </div>
           ) : null}
         </div>
-        {this.state.isAdmin ? (
-          <>
-            <this.renderAdminHome />
-          </>
-        ) : this.state.elStarted ? (
+        {this.state.elStarted ? (
           <>
             <UserHome el={this.state.elDetails} />
           </>
@@ -171,136 +164,4 @@ export default class Home extends Component {
       </>
     );
   }
-
-  renderAdminHome = () => {
-    const EMsg = (props) => {
-      return <span style={{ color: "tomato" }}>{props.msg}</span>;
-    };
-
-    const AdminHome = () => {
-      // Contains of Home page for the Admin
-      const {
-        handleSubmit,
-        register,
-        formState: { errors },
-      } = useForm();
-
-      const onSubmit = (data) => {
-        this.registerElection(data);
-      };
-
-      return (
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {!this.state.elStarted & !this.state.elEnded ? (
-              <div className="container-main">
-                {/* about-admin */}
-                <div className="about-admin">
-                  <h3>About Admin</h3>
-                  <div className="container-item center-items">
-                    <div>
-                      <label className="label-home">
-                        Full Name{" "}
-                        {errors.adminFName && <EMsg msg="*required" />}
-                        <input
-                          className="input-home"
-                          type="text"
-                          placeholder="First Name"
-                          {...register("adminFName", {
-                            required: true,
-                          })}
-                        />
-                        <input
-                          className="input-home"
-                          type="text"
-                          placeholder="Last Name"
-                          {...register("adminLName")}
-                        />
-                      </label>
-
-                      <label className="label-home">
-                        Email{" "}
-                        {errors.adminEmail && (
-                          <EMsg msg={errors.adminEmail.message} />
-                        )}
-                        <input
-                          className="input-home"
-                          placeholder="eg. you@example.com"
-                          name="adminEmail"
-                          {...register("adminEmail", {
-                            required: "*Required",
-                            pattern: {
-                              value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/, // email validation using RegExp
-                              message: "*Invalid",
-                            },
-                          })}
-                        />
-                      </label>
-
-                      <label className="label-home">
-                        Job Title or Position{" "}
-                        {errors.adminTitle && <EMsg msg="*required" />}
-                        <input
-                          className="input-home"
-                          type="text"
-                          placeholder="eg. HR Head "
-                          {...register("adminTitle", {
-                            required: true,
-                          })}
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                {/* about-election */}
-                <div className="about-election">
-                  <h3>About Election</h3>
-                  <div className="container-item center-items">
-                    <div>
-                      <label className="label-home">
-                        Election Title{" "}
-                        {errors.electionTitle && <EMsg msg="*required" />}
-                        <input
-                          className="input-home"
-                          type="text"
-                          placeholder="eg. School Election"
-                          {...register("electionTitle", {
-                            required: true,
-                          })}
-                        />
-                      </label>
-                      <label className="label-home">
-                        Organization Name{" "}
-                        {errors.organizationName && <EMsg msg="*required" />}
-                        <input
-                          className="input-home"
-                          type="text"
-                          placeholder="eg. Lifeline Academy"
-                          {...register("organizationTitle", {
-                            required: true,
-                          })}
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : this.state.elStarted ? (
-              <UserHome el={this.state.elDetails} />
-            ) : null}
-            <StartEnd
-              elStarted={this.state.elStarted}
-              elEnded={this.state.elEnded}
-              endElFn={this.endElection}
-            />
-            <ElectionStatus
-              elStarted={this.state.elStarted}
-              elEnded={this.state.elEnded}
-            />
-          </form>
-        </div>
-      );
-    };
-    return <AdminHome />;
-  };
 }

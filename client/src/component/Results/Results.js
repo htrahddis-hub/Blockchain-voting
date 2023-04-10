@@ -13,6 +13,7 @@ import Election from "../../contracts/Election.json";
 
 // CSS
 import "./Results.css";
+import ResultPie from "./piechart";
 
 export default class Result extends Component {
   constructor(props) {
@@ -81,7 +82,7 @@ export default class Result extends Component {
           id: candidate.candidateId,
           header: candidate.header,
           slogan: candidate.slogan,
-          voteCount: candidate.voteCount,
+          voteCount: parseInt(candidate.voteCount),
           voterAges: candidateAgeArr,
           maleVoters: candidate.maleVoter,
           femaleVoters: candidate.voteCount - candidate.maleVoter,
@@ -189,6 +190,7 @@ export function displayResults(candidates) {
       </tr>
     );
   };
+
   return (
     <>
       {candidates.length > 0 ? (

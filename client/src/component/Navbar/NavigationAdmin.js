@@ -8,7 +8,7 @@ export default function NavbarAdmin() {
   return (
     <nav>
       <div className="header">
-        <NavLink to="/">
+        <NavLink to="/admin">
           <i className="fab fa-hive" /> Admin
         </NavLink>
       </div>
