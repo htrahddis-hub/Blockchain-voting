@@ -9,6 +9,7 @@ a {
   color: white;
 }
 nav {
+  z-index: 40;
   display: flex;
   height: 11vh;
   background: tomato;

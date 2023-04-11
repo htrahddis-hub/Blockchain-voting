@@ -13,7 +13,10 @@ import Election from "../../contracts/Election.json";
 
 // CSS
 import "./Results.css";
+
 import ResultPie from "./piechart";
+import AgeChart from "./AgeChart";
+import GenderChart from "./GenderChart";
 
 export default class Result extends Component {
   constructor(props) {
@@ -76,7 +79,7 @@ export default class Result extends Component {
           const candidateAge = await this.state.ElectionInstance.methods
             .candidatesVoterAges(i - 1, j - 1)
             .call();
-          candidateAgeArr.push(candidateAge);
+          candidateAgeArr.push(parseInt(candidateAge));
         }
         this.state.candidates.push({
           id: candidate.candidateId,
@@ -84,7 +87,7 @@ export default class Result extends Component {
           slogan: candidate.slogan,
           voteCount: parseInt(candidate.voteCount),
           voterAges: candidateAgeArr,
-          maleVoters: candidate.maleVoter,
+          maleVoters: parseInt(candidate.maleVoter),
           femaleVoters: candidate.voteCount - candidate.maleVoter,
         });
       }
@@ -119,6 +122,7 @@ export default class Result extends Component {
       <>
         {this.state.isAdmin ? <NavbarAdmin /> : <Navbar />}
         <br />
+
         <div>
           {!this.state.isElStarted && !this.state.isElEnded ? (
             <NotInit />
@@ -218,8 +222,38 @@ export function displayResults(candidates) {
             <div
               className="container-item"
               style={{ border: "1px solid black" }}
-            >
-              <center>That is all.</center>
+            ></div>
+            <div className="container-main">
+              <h2
+                style={{
+                  padding: "30px 20px",
+                  margin: "auto",
+                  textAlign: "center",
+                }}
+              >
+                Vote Distribution amongst candidates
+              </h2>
+              <ResultPie candidate={candidates} />
+              <h2
+                style={{
+                  padding: "30px 20px",
+                  margin: "auto",
+                  textAlign: "center",
+                }}
+              >
+                Voter Distribution split by ages
+              </h2>
+              <AgeChart candidate={candidates} />
+              <h2
+                style={{
+                  padding: "30px 20px",
+                  margin: "auto",
+                  textAlign: "center",
+                }}
+              >
+                Voter Distribution by gender
+              </h2>
+              <GenderChart candidate={candidates} />
             </div>
           </>
         )}
