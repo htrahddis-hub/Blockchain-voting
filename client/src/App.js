@@ -16,7 +16,9 @@ import Footer from "./component/Footer/Footer";
 
 import "./App.css";
 import LandingPage from "./component/LandingPage";
+import LoginPage from "./component/Login";
 import AdminPage from "./component/AdminHome";
+import SignupPage from "./component/Signup";
 
 export default class App extends Component {
   render() {
@@ -25,6 +27,8 @@ export default class App extends Component {
         <Router>
           <Switch>
             <Route exact path="/" component={LandingPage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/admin" component={AdminPage} />
             <Route exact path="/home" component={Home} />
             <Route exact path="/AddCandidate" component={AddCandidate} />
@@ -36,7 +40,7 @@ export default class App extends Component {
             <Route exact path="*" component={NotFound} />
           </Switch>
         </Router>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
