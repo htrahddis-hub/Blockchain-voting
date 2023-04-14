@@ -224,7 +224,7 @@ export default class AdminPage extends Component {
                         <input
                           className="input-home"
                           type="text"
-                          placeholder="eg. HR Head "
+                          placeholder="eg. Managing Director "
                           {...register("adminTitle", {
                             required: true,
                           })}
@@ -244,7 +244,7 @@ export default class AdminPage extends Component {
                         <input
                           className="input-home"
                           type="text"
-                          placeholder="eg. School Election"
+                          placeholder="eg. Union Election"
                           {...register("electionTitle", {
                             required: true,
                           })}
@@ -256,7 +256,7 @@ export default class AdminPage extends Component {
                         <input
                           className="input-home"
                           type="text"
-                          placeholder="eg. Lifeline Academy"
+                          placeholder="eg. XYZ incorporated"
                           {...register("organizationTitle", {
                             required: true,
                           })}

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+/*import React, { Component } from "react";
 
 import Navbar from "../../Navbar/Navigation";
 import NavbarAdmin from "../../Navbar/NavigationAdmin";
@@ -150,3 +150,4 @@ export default class StartEnd extends Component {
     );
   }
 }
+*/
