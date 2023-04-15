@@ -4,7 +4,7 @@ import express from "express";
 import UserModel from "../model/user.js";
 import { isEmail } from "../util/index.js";
 import dotenv from "dotenv";
-import path from 'node:path';
+import path from "node:path";
 import fs from "node:fs";
 
 const router = express.Router();
@@ -58,8 +58,7 @@ router.post("/login", (req, res) => {
                     process.env.PRIVATEKEY,
                     { expiresIn: "48h" },
                     function (err, token) {
-                      if(err)
-                        console.log(err);
+                      if (err) console.log(err);
                       res
                         .status(200)
                         .json({ message: "Login Successful", jwt: token });
@@ -73,7 +72,5 @@ router.post("/login", (req, res) => {
     }
   }
 });
-
-
 
 export default router;

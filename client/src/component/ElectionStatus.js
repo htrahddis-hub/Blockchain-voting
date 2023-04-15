@@ -1,7 +1,7 @@
 import React from "react";
 
 const ElectionStatus = (props) => {
-  const electionStatus = {
+  const electionStatusStyle = {
     padding: "11px",
     margin: "7px",
     width: "100%",
@@ -21,7 +21,7 @@ const ElectionStatus = (props) => {
       style={{ borderTop: "1px solid", marginTop: "0px" }}
     >
       <h3>Election Status</h3>
-      <div style={electionStatus}>
+      <div style={electionStatusStyle}>
         <p>
           {props.elStarted
             ? props.elEnded

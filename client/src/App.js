@@ -19,6 +19,8 @@ import LoginPage from "./component/Login";
 import AdminPage from "./component/AdminHome";
 import SignupPage from "./component/Signup";
 
+import { WebcamCapture } from "./component/webcam";
+
 export default class App extends Component {
   render() {
     return (
@@ -26,6 +28,7 @@ export default class App extends Component {
         <Router>
           <Switch>
             <Route exact path="/" component={LandingPage} />
+            <Route exact path="/webcam" component={WebcamCapture}></Route>
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/admin" component={AdminPage} />
@@ -35,7 +38,7 @@ export default class App extends Component {
             <Route exact path="/Results" component={Results} />
             <Route exact path="/Registration" component={Registration} />
             <Route exact path="/Verification" component={Verification} />
-            <Route exact path="/test" component={test} />
+
             <Route exact path="*" component={NotFound} />
           </Switch>
         </Router>
