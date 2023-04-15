@@ -1,12 +1,82 @@
-import React, { Component } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import bgimg from "../background.png";
+import { signup } from "../api";
 
 // CSS
 import "./login.css";
 
 // const buttonRef = React.createRef();
 const SignupPage = () => {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [message, setMessage] = useState({
+    visible: false,
+    type: "",
+    text: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setMessage((prev) => {
+      return {
+        ...prev,
+        type: "",
+        visible: false,
+        text: "",
+      };
+    });
+    setUser((prevUser) => {
+      return {
+        ...prevUser,
+        [name]: value,
+      };
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    if (user.password === user.confirmPassword) {
+      event.preventDefault();
+      const data = await signup(user);
+      if (data === "ok") {
+        setMessage((prev) => {
+          return {
+            ...prev,
+            type: "good",
+            visible: true,
+            text: "Signup Successful",
+          };
+        });
+      } else {
+        setMessage((prev) => {
+          return {
+            ...prev,
+            type: "bad",
+            visible: true,
+            text: data,
+          };
+        });
+      }
+      setUser({
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } else {
+      setMessage((prev) => {
+        return {
+          ...prev,
+          type: "bad",
+          visible: true,
+          text: "password doesn't match",
+        };
+      });
+    }
+  };
+
   return (
     <div>
       <div>
@@ -35,37 +105,54 @@ const SignupPage = () => {
 
             <div className="box py-3">
               <div className="form px-3">
-                <div class="form-floating mb-3">
+                <div className="form-floating mb-3">
                   <input
                     type="email"
-                    class="form-control"
+                    className="form-control"
                     id="floatingInput"
                     placeholder="name@example.com"
+                    name="email"
+                    value={user.email}
+                    onChange={handleChange}
                   />
-                  <label for="floatingInput">Email address</label>
+                  <label htmlFor="floatingInput">Email address</label>
                 </div>
-                <div class="form-floating mb-4">
+                <div className="form-floating mb-4">
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     id="floatingPassword"
                     placeholder="Password"
+                    name="password"
+                    value={user.password}
+                    onChange={handleChange}
                   />
-                  <label for="floatingPassword">Password</label>
+                  <label htmlFor="floatingPassword">Password</label>
                 </div>
-                <div class="form-floating mb-4">
+                <div className="form-floating mb-4">
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     id="floatingPassword"
                     placeholder="Password"
+                    name="confirmPassword"
+                    value={user.confirmPassword}
+                    onChange={handleChange}
                   />
-                  <label for="floatingPassword">Confirm Password</label>
+                  <label htmlFor="floatingPassword">Confirm Password</label>
                 </div>
+                {message.visible ? (
+                  <p style={{ color: message.type === "bad" ? "red" : "blue" }}>
+                    {message.text}
+                  </p>
+                ) : (
+                  <></>
+                )}
                 <div className="d-grid gap-2">
                   <button
                     type="submit"
                     className="btn btn-secondary btn-block mb-4"
+                    onClick={handleSubmit}
                   >
                     Register
                   </button>

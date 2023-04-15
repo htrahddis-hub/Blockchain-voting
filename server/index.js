@@ -4,10 +4,12 @@ import auth from "./routes/routes.js";
 import face from "./routes/face.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from 'cors';
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors({origin:'http://localhost:3000',credentials: true}));
 
 dotenv.config();
 
