@@ -8,7 +8,7 @@ export default function Navbar() {
   return (
     <nav>
       <NavLink to="/home" className="header">
-        <i className="fab fa-hive"></i> Home
+        <i className="fa fa-home"></i> Home
       </NavLink>
       <ul
         className="navbar-links"

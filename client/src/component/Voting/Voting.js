@@ -228,7 +228,7 @@ export default class Voting extends Component {
                 <small>Total candidates: {this.state.candidates.length}</small>
                 {this.state.candidates.length < 1 ? (
                   <div className="container-item attention">
-                    <center>Not one to vote for.</center>
+                    <center>No one to vote for.</center>
                   </div>
                 ) : (
                   <>

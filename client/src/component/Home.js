@@ -94,26 +94,6 @@ export default class Home extends Component {
       console.error(error);
     }
   };
-  // end election
-  endElection = async () => {
-    await this.state.ElectionInstance.methods
-      .endElection()
-      .send({ from: this.state.account, gas: 1000000 });
-    window.location.reload();
-  };
-  // register and start election
-  registerElection = async (data) => {
-    await this.state.ElectionInstance.methods
-      .setElectionDetails(
-        data.adminFName.toLowerCase() + " " + data.adminLName.toLowerCase(),
-        data.adminEmail.toLowerCase(),
-        data.adminTitle.toLowerCase(),
-        data.electionTitle.toLowerCase(),
-        data.organizationTitle.toLowerCase()
-      )
-      .send({ from: this.state.account, gas: 1000000 });
-    window.location.reload();
-  };
 
   render() {
     if (!this.state.web3) {

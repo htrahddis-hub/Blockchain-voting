@@ -173,7 +173,7 @@ export function loadAdded(candidates) {
               overflow: "auto",
             }}
           >
-            {candidate.id}. <strong>{candidate.header}</strong>:{" "}
+            {parseInt(candidate.id) + 1}. <strong>{candidate.header}</strong>:{" "}
             {candidate.slogan}
           </div>
         </div>

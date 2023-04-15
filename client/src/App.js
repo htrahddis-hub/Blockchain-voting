@@ -10,7 +10,6 @@ import Registration from "./component/Registration/Registration";
 import AddCandidate from "./component/Admin/AddCandidate/AddCandidate";
 import Verification from "./component/Admin/Verification/Verification";
 import test from "./component/test";
-// import StartEnd from "./component/Admin/StartEnd/StartEnd";
 
 // import Footer from "./component/Footer/Footer";
 
@@ -19,6 +18,7 @@ import LandingPage from "./component/LandingPage";
 import LoginPage from "./component/Login";
 import AdminPage from "./component/AdminHome";
 import SignupPage from "./component/Signup";
+import WebcamCapture from "./component/webcam";
 import { authorize } from "./api";
 
 const App = () => {
@@ -43,6 +43,7 @@ const App = () => {
           ) : (
             <Route exact path="/" component={LoginPage} />
           )}
+          <Route exact path="/webcam" component={WebcamCapture}/>
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/admin" component={AdminPage} />
