@@ -14,7 +14,7 @@ export async function dataUrlToFile(dataUrl, fileName) {
   const blob = await res.blob();
   return new File([blob], fileName, { type: "image/jpg" });
 }
-export const WebcamCapture = () => {
+function WebcamCapture() {
   const [image, setImage] = useState("");
   const webcamRef = React.useRef(null);
 
@@ -71,4 +71,5 @@ export const WebcamCapture = () => {
       </div>
     </div>
   );
-};
+}
+export default WebcamCapture;

@@ -5,13 +5,13 @@ import face from "./routes/face.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-import multer from "multer";import cors from 'cors';
+import multer from "multer";
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({origin:'http://localhost:3000',credentials: true}));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 dotenv.config();
 

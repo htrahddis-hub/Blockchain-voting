@@ -4,7 +4,7 @@ import express from "express";
 import UserModel from "../model/user.js";
 import { isEmail } from "../util/index.js";
 import dotenv from "dotenv";
-import path from "node:path";
+
 import path from "node:path";
 import fs from "node:fs";
 

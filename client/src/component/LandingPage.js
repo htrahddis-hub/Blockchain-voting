@@ -39,7 +39,7 @@ const LandingPage = () => {
               </button>
               <p className="mt-5 p-2 h6">Or</p>
               <button className="ms-3 btn btn-info mt-5">
-                <NavLink to="/home">Home</NavLink>
+                <NavLink to="/home">Vote</NavLink>
               </button>
             </div>
           </div>
