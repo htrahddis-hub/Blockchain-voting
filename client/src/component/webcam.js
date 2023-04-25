@@ -5,16 +5,17 @@ import axios from "axios";
 const WebcamComponent = () => <Webcam />;
 
 const videoConstraints = {
-  width: 220,
-  height: 200,
+  width: 480,
+  height: 480,
   facingMode: "user",
 };
-export async function dataUrlToFile(dataUrl, fileName) {
-  const res = await fetch(dataUrl);
-  const blob = await res.blob();
-  return new File([blob], fileName, { type: "image/jpg" });
-}
+
 function WebcamCapture() {
+  const dataUrlToFile = async (dataUrl, fileName) => {
+    const res = await fetch(dataUrl);
+    const blob = await res.blob();
+    return new File([blob], fileName, { type: "image/jpg" });
+  };
   const [image, setImage] = useState("");
   const webcamRef = React.useRef(null);
 
@@ -27,7 +28,7 @@ function WebcamCapture() {
     console.log(x);
     fd.append("file", x);
     //console.log(fd);
-    axios.post("http://localhost:3001/upload", fd).then((res) => {
+    axios.post("http://localhost:3001/kyc/detect", fd).then((res) => {
       console.log(res);
     });
   });
@@ -38,10 +39,10 @@ function WebcamCapture() {
         {image == "" ? (
           <Webcam
             audio={false}
-            height={200}
+            height={280}
             ref={webcamRef}
             screenshotFormat="image/jpeg"
-            width={220}
+            width={280}
             videoConstraints={videoConstraints}
           />
         ) : (

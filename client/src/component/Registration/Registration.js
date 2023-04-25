@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import Navbar from "../Navbar/Navigation";
 import NavbarAdmin from "../Navbar/NavigationAdmin";
 import NotInit from "../NotInit";
-
+import axios from "axios";
 // CSS
 import "./Registration.css";
 
@@ -28,6 +28,7 @@ export default class Registration extends Component {
       voterName: "",
       voterPhone: "",
       voters: [],
+      voterID: null,
       voterAge: 0,
       currentVoter: {
         address: undefined,
@@ -145,11 +146,23 @@ export default class Registration extends Component {
   updateVoterAge = (event) => {
     this.setState({ voterAge: event.target.value });
   };
+  updateVoterID = (event) => {
+    this.setState({ voterID: event.target.files[0] });
+  };
   updateVoterGender = (event) => {
     console.log(event.target.value);
     this.setState({ voterGender: event.target.value });
   };
-  registerAsVoter = async () => {
+  registerAsVoter = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", this.state.voterID);
+    console.log(this.state.voterID);
+    await axios
+      .post("http://localhost:3001/kyc/detect", formData, {})
+      .then((res) => {
+        console.log(res);
+      });
     const genderBoolean = this.state.voterGender === "male" ? 1 : 0;
     await this.state.ElectionInstance.methods
       .registerAsVoter(
@@ -249,6 +262,18 @@ export default class Registration extends Component {
                       </select>
                     </label>
                   </div>
+                  <div className="div-li">
+                    <label className={"label-r"}>
+                      ID CARD <span style={{ color: "tomato" }}>*</span>
+                      <input
+                        className={"input-r"}
+                        type="file"
+                        placeholder="Image of your ID"
+                        onChange={this.updateVoterID}
+                      />
+                    </label>
+                  </div>
+
                   <p className="note">
                     <span style={{ color: "tomato" }}> Note: </span>
                     <br /> Make sure your account address and Phone number are

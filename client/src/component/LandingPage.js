@@ -8,6 +8,10 @@ import "./Home.css";
 
 // const buttonRef = React.createRef();
 const LandingPage = () => {
+  let token = decodeURIComponent(document.cookie);
+  token = { token: token.substring(6) };
+  console.log(token);
+
   return (
     <div>
       <div>

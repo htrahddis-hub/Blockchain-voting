@@ -43,7 +43,7 @@ const App = () => {
           ) : (
             <Route exact path="/" component={LoginPage} />
           )}
-          <Route exact path="/webcam" component={WebcamCapture}/>
+          <Route exact path="/webcam" component={WebcamCapture} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/admin" component={AdminPage} />

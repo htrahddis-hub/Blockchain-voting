@@ -13,6 +13,8 @@ import Election from "../../contracts/Election.json";
 
 // CSS
 import "./Voting.css";
+import Webcam from "react-webcam";
+import WebcamCapture from "../webcam";
 
 export default class Voting extends Component {
   constructor(props) {
@@ -223,6 +225,7 @@ export default class Voting extends Component {
                   </div>
                 </>
               )}
+
               <div className="container-main">
                 <h2>Candidates</h2>
                 <small>Total candidates: {this.state.candidates.length}</small>
@@ -232,6 +235,7 @@ export default class Voting extends Component {
                   </div>
                 ) : (
                   <>
+                    <WebcamCapture></WebcamCapture>
                     {this.state.candidates.map(this.renderCandidates)}
                     <div
                       className="container-item"

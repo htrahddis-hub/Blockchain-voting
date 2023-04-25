@@ -61,10 +61,10 @@ export default class Home extends Component {
         account: accounts[0],
       });
 
-      /* const admin = await this.state.ElectionInstance.methods.getAdmin().call();
+      const admin = await this.state.ElectionInstance.methods.getAdmin().call();
       if (this.state.account === admin) {
         this.setState({ isAdmin: true });
-      }*/
+      }
 
       // Get election start and end values
       const start = await this.state.ElectionInstance.methods.getStart().call();
