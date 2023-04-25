@@ -43,16 +43,18 @@ router.post("/detect", upload.single("file"), (req, res) => {
   detectionService
     .detect(image, options)
     .then((response) => {
-      const ans = JSON.stringify(response);
-      res.send(ans);
+      if (response.result[0].box.probability > 0.8);
+      res.status(200).send({ message: "ok", isFace: true });
       unlinkAsync(req.file.path);
     })
     .catch((error) => {
-      res.status(200).json({ message: error });
-      // console.log(` ${error}`);
+      res.status(200).send({ message: "ok", isFace: false });
+      unlinkAsync(req.file.path);
     });
 });
 
-router.post("/verify", upload.array(), (req, res) => {});
+router.post("/verify", upload.array(), (req, res) => {
+  console.log(req.file);
+});
 
 export default router;
