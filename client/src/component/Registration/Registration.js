@@ -27,6 +27,7 @@ export default class Registration extends Component {
       voterGender: "male",
       voterName: "",
       voterPhone: "",
+      fileUploadError: 0,
       voters: [],
       voterID: null,
       voterAge: 0,
@@ -146,23 +147,29 @@ export default class Registration extends Component {
   updateVoterAge = (event) => {
     this.setState({ voterAge: event.target.value });
   };
-  updateVoterID = (event) => {
-    this.setState({ voterID: event.target.files[0] });
+  updateVoterID = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    const img = event.target.files[0];
+    console.log(event.target.files[0]);
+    await axios
+      .post("http://localhost:3001/kyc/detect", formData, {})
+      .then((res) => {
+        console.log(res);
+        if (res.data.isFace === true) {
+          this.setState({
+            voterID: img,
+            fileUploadError: 2,
+          });
+        } else this.setState({ fileUploadError: 1 });
+      });
   };
   updateVoterGender = (event) => {
     console.log(event.target.value);
     this.setState({ voterGender: event.target.value });
   };
   registerAsVoter = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("file", this.state.voterID);
-    console.log(this.state.voterID);
-    await axios
-      .post("http://localhost:3001/kyc/detect", formData, {})
-      .then((res) => {
-        console.log(res);
-      });
     const genderBoolean = this.state.voterGender === "male" ? 1 : 0;
     await this.state.ElectionInstance.methods
       .registerAsVoter(
@@ -271,6 +278,11 @@ export default class Registration extends Component {
                         placeholder="Image of your ID"
                         onChange={this.updateVoterID}
                       />
+                      {this.state.fileUploadError === 1 ? (
+                        <div class="alert alert-danger" role="alert">
+                          Face not detected , Please upload valid ID card .
+                        </div>
+                      ) : null}
                     </label>
                   </div>
 
@@ -287,7 +299,8 @@ export default class Registration extends Component {
                       this.state.voterPhone.length !== 10 ||
                       this.state.currentVoter.isVerified ||
                       this.state.voterAge < 18 ||
-                      this.state.voterAge > 120
+                      this.state.voterAge > 120 ||
+                      this.state.fileUploadError !== 2
                     }
                     onClick={this.registerAsVoter}
                   >
