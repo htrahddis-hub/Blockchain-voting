@@ -5,6 +5,8 @@ import fs from "node:fs";
 import { promisify } from "node:util";
 import multer from "multer";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import UserModel from "../model/user.js";
 
 dotenv.config();
 const router = express.Router();
@@ -38,8 +40,26 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
+function auth(req, res, next) {
+  try {
+    const data = req.body.token;
+    if (data === undefined) res.status(401).json({ messages: "empty" });
+    else {
+      const decoded = jwt.verify(data, process.env.PRIVATEKEY);
+      if (decoded) {
+        req.body.userId = decoded.id;
+        next();
+      } else res.status(401).json({ message: "invalid-token" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ message: "invalid token", error: error });
+  }
+}
+
 router.post("/detect", upload.single("file"), (req, res) => {
   const image = path.resolve(req.file.path);
+
   detectionService
     .detect(image, options)
     .then((response) => {
@@ -53,8 +73,52 @@ router.post("/detect", upload.single("file"), (req, res) => {
     });
 });
 
-router.post("/verify", upload.array(), (req, res) => {
+router.post("/image", upload.single("file"), auth, async (req, res) => {
+  const image = path.resolve(req.file.path);
   console.log(req.file);
+  const bitmap = fs.readFileSync(image, "base64");
+
+  UserModel.find();
+  const user = await UserModel.findById(req.body.userId);
+  user.image = bitmap;
+  user.imageName = req.file.filename;
+  await user.save();
+
+  res.status(200).send({ message: "ok" });
+  unlinkAsync(req.file.path);
+});
+
+router.post("/verify", upload.single("file"), auth, async (req, res) => {
+  const image = path.resolve(req.file.path);
+  const pathImage = image.replace(req.file.filename, "");
+
+  const user = await UserModel.findById(req.body.userId);
+  const buffer = Buffer.from(user.image, "base64");
+
+  const finalPath = `${pathImage}/${user.imageName}`;
+
+  fs.writeFileSync(finalPath, "");
+  fs.writeFileSync(finalPath, buffer);
+  const image2 = path.resolve(finalPath);
+
+  verificationService
+    .verify(image, image2, options)
+    .then((response) => {
+      if (response.result[0].face_matches[0].box.probability > 0.9) {
+        res.status(200).send({ message: "ok", isMatch: true });
+        unlinkAsync(image);
+        unlinkAsync(image2);
+      } else {
+        res.status(200).send({ message: "ok", isMatch: false });
+        unlinkAsync(image);
+        unlinkAsync(image2);
+      }
+    })
+    .catch((error) => {
+      res.status(200).send({ message: "ok", isMatch: false });
+      unlinkAsync(image);
+      unlinkAsync(image2);
+    });
 });
 
 export default router;
