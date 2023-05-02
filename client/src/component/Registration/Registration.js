@@ -151,6 +151,8 @@ export default class Registration extends Component {
     event.preventDefault();
     const formData = new FormData();
     formData.append("file", event.target.files[0]);
+
+    console.log(formData);
     const img = event.target.files[0];
     console.log(event.target.files[0]);
     await axios
@@ -166,10 +168,25 @@ export default class Registration extends Component {
       });
   };
   updateVoterGender = (event) => {
-    console.log(event.target.value);
     this.setState({ voterGender: event.target.value });
   };
   registerAsVoter = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+
+    formData.append("file", this.state.voterID);
+    let token = decodeURIComponent(document.cookie);
+    token = { token: token.substring(6) };
+    console.log(token);
+    formData.append("token", token.token);
+    for (const value of formData.values()) {
+      console.log(value);
+    }
+    await axios
+      .post("http://localhost:3001/kyc/image", formData, {})
+      .then((res) => {
+        console.log(res);
+      });
     const genderBoolean = this.state.voterGender === "male" ? 1 : 0;
     await this.state.ElectionInstance.methods
       .registerAsVoter(

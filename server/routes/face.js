@@ -43,6 +43,7 @@ var upload = multer({ storage: storage });
 function auth(req, res, next) {
   try {
     const data = req.body.token;
+    console.log(req.body);
     if (data === undefined) res.status(401).json({ messages: "empty" });
     else {
       const decoded = jwt.verify(data, process.env.PRIVATEKEY);
@@ -74,6 +75,7 @@ router.post("/detect", upload.single("file"), (req, res) => {
 });
 
 router.post("/image", upload.single("file"), auth, async (req, res) => {
+  // console.log(req.body);
   const image = path.resolve(req.file.path);
   console.log(req.file);
   const bitmap = fs.readFileSync(image, "base64");
@@ -104,7 +106,8 @@ router.post("/verify", upload.single("file"), auth, async (req, res) => {
   verificationService
     .verify(image, image2, options)
     .then((response) => {
-      if (response.result[0].face_matches[0].box.probability > 0.9) {
+      console.log(response.result[0].face_matches[0].box);
+      if (response.result[0].face_matches[0].similarity > 0.9) {
         res.status(200).send({ message: "ok", isMatch: true });
         unlinkAsync(image);
         unlinkAsync(image2);

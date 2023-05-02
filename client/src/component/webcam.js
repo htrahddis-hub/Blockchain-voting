@@ -27,8 +27,12 @@ function WebcamCapture() {
     var fd = new FormData();
     console.log(x);
     fd.append("file", x);
+    let token = decodeURIComponent(document.cookie);
+    token = { token: token.substring(6) };
+    console.log(token);
+    fd.append("token", token.token);
     //console.log(fd);
-    axios.post("http://localhost:3001/kyc/detect", fd).then((res) => {
+    axios.post("http://localhost:3001/kyc/verify", fd).then((res) => {
       console.log(res);
     });
   });

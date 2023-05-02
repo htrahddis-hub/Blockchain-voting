@@ -31,6 +31,7 @@ export const authorize = async () => {
   try {
     let token = decodeURIComponent(document.cookie);
     token = { token: token.substring(6) };
+    // console.log(token);
     const { data } = await axios.post(url + "verify", { data: token });
     if (data.message === "verification successful") return "ok";
   } catch (err) {
