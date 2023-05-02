@@ -19,6 +19,7 @@ import WebcamCapture from "../webcam";
 export default class Voting extends Component {
   constructor(props) {
     super(props);
+    this.updateImageMatched = this.updateImageMatched.bind(this);
     this.state = {
       ElectionInstance: undefined,
       account: null,
@@ -28,6 +29,7 @@ export default class Voting extends Component {
       candidates: [],
       isElStarted: false,
       isElEnded: false,
+      imageMatched: 0,
       currentVoter: {
         address: undefined,
         name: null,
@@ -38,6 +40,7 @@ export default class Voting extends Component {
       },
     };
   }
+
   componentDidMount = async () => {
     // refreshing once
     if (!window.location.hash) {
@@ -90,8 +93,9 @@ export default class Voting extends Component {
           slogan: candidate.slogan,
         });
       }
-      this.setState({ candidates: this.state.candidates });
 
+      this.setState({ candidates: this.state.candidates });
+      console.log(this.state.imageMatched);
       // Loading current voter
       const voter = await this.state.ElectionInstance.methods
         .voterDetails(this.state.account)
@@ -151,7 +155,8 @@ export default class Voting extends Component {
             disabled={
               !this.state.currentVoter.isRegistered ||
               !this.state.currentVoter.isVerified ||
-              this.state.currentVoter.hasVoted
+              this.state.currentVoter.hasVoted ||
+              this.state.imageMatched !== 2
             }
           >
             Vote
@@ -160,7 +165,9 @@ export default class Voting extends Component {
       </div>
     );
   };
-
+  updateImageMatched(x) {
+    this.setState({ imageMatched: x });
+  }
   render() {
     if (!this.state.web3) {
       return (
@@ -235,7 +242,27 @@ export default class Voting extends Component {
                   </div>
                 ) : (
                   <>
-                    <WebcamCapture></WebcamCapture>
+                    {this.state.currentVoter.hasVoted === false &&
+                    this.state.currentVoter.isVerified == true &&
+                    this.state.currentVoter.isRegistered == true ? (
+                      this.state.imageMatched !== 2 ? (
+                        <>
+                          <div class="alert alert-warning">
+                            {" "}
+                            Your image needs to match with your uploaded ID to
+                            be verified{" "}
+                          </div>
+                          <WebcamCapture
+                            imageMatched={this.state.imageMatched}
+                            updateImageMatched={this.updateImageMatched}
+                          ></WebcamCapture>
+                        </>
+                      ) : (
+                        <div class="alert alert-success" role="alert">
+                          Verification successful.You can now vote.
+                        </div>
+                      )
+                    ) : null}
                     {this.state.candidates.map(this.renderCandidates)}
                     <div
                       className="container-item"
