@@ -86,6 +86,7 @@ export default class Home extends Component {
           organizationTitle: electionDetails.organizationTitle,
         },
       });
+      console.log(this.state.account);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(

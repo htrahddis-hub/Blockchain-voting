@@ -127,10 +127,16 @@ export default class Voting extends Component {
 
   renderCandidates = (candidate) => {
     const castVote = async (id) => {
-      await this.state.ElectionInstance.methods
-        .vote(id)
-        .send({ from: this.state.account, gas: 1000000 });
-      window.location.reload();
+      try {
+        await this.state.ElectionInstance.methods
+          .vote(id)
+          .send({ from: this.state.account, gas: 1000000 });
+
+        window.location.reload();
+      } catch (error) {
+        //console.log(error.messag);
+        alert(error.message);
+      }
     };
     const confirmVote = (id, header) => {
       var r = window.confirm(

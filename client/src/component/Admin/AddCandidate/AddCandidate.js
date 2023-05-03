@@ -94,10 +94,14 @@ export default class AddCandidate extends Component {
   };
 
   addCandidate = async () => {
-    await this.state.ElectionInstance.methods
-      .addCandidate(this.state.header, this.state.slogan)
-      .send({ from: this.state.account, gas: 1000000 });
-    window.location.reload();
+    try {
+      await this.state.ElectionInstance.methods
+        .addCandidate(this.state.header, this.state.slogan)
+        .send({ from: this.state.account, gas: 1000000 });
+      window.location.reload();
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   render() {
