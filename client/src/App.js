@@ -53,7 +53,7 @@ const App = () => {
           <Route exact path="/Results" component={Results} />
           <Route exact path="/Registration" component={Registration} />
           <Route exact path="/Verification" component={Verification} />
-          <Route exact path="/test" component={test} />
+
           <Route exact path="*" component={NotFound} />
         </Switch>
       </Router>
