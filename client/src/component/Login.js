@@ -49,7 +49,7 @@ const LoginPage = () => {
           text: "Login Successful",
         };
       });
-      history.push("/");
+      window.location.assign("/");
     } else {
       setMessage((prev) => {
         return {

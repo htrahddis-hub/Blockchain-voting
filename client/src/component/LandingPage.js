@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import bgimg from "../background.png";
 import getWeb3 from "../getWeb3";
 import Election from "../contracts/Election.json";
@@ -15,6 +15,7 @@ const LandingPage = () => {
   const [account, setAccount] = useState(null);
   const [isElStarted, setIsElStarted] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     console.log("reloaded");
@@ -74,6 +75,12 @@ const LandingPage = () => {
     // console.log(account, isElStarted, isAdmin);
     return () => {};
   }, []);
+
+  const handleLogout = () => {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    history.go("/login");
+  };
+
   console.log(account, isAdmin, isElStarted);
   return (
     <>
@@ -85,10 +92,19 @@ const LandingPage = () => {
         <div>
           <div>
             <nav className="navbar bg-body-tertiary">
-              <div className="container-fluid justify-content-center">
-                <a className="navbar-brand" href="/">
-                  E-Voting Blockchain
-                </a>
+              <div className="container-fluid ">
+                <div className="justify-content-center">
+                  <a className="navbar-brand" href="/">
+                    E-Voting Blockchain
+                  </a>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
               </div>
             </nav>
           </div>

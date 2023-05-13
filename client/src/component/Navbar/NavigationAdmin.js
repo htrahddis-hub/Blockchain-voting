@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
 import "./Navbar.css";
 
 export default function NavbarAdmin() {
+  const history = useHistory();
+  const handleLogout = () => {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    history.push("/login");
+  };
+
   const [open, setOpen] = useState(false);
   return (
     <nav>
@@ -13,7 +19,7 @@ export default function NavbarAdmin() {
         </NavLink>
       </div>
       <ul
-        className="navbar-links"
+        className="navbar-links mb-0"
         style={{ transform: open ? "translateX(0px)" : "" }}
       >
         <li>
@@ -42,6 +48,9 @@ export default function NavbarAdmin() {
           </NavLink>
         </li>
       </ul>
+      <button type="button" class="btn btn-warning" onClick={handleLogout}>
+        Logout
+      </button>
       <i onClick={() => setOpen(!open)} className="fas fa-bars burger-menu"></i>
     </nav>
   );
