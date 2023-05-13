@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import bgimg from "../background.png";
 import { login } from "../api";
 
@@ -8,6 +8,7 @@ import "./login.css";
 
 // const buttonRef = React.createRef();
 const LoginPage = () => {
+  const history = useHistory();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -48,6 +49,7 @@ const LoginPage = () => {
           text: "Login Successful",
         };
       });
+      history.push("/");
     } else {
       setMessage((prev) => {
         return {
