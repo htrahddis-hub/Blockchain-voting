@@ -41,9 +41,9 @@ Download it from chrome [website](https://www.google.com/chrome/) and Metamask f
 
 Install chrome , sign up and add the Metamask Extension and make an wallet account in metamask.
 
-## MongoDB 
+### MongoDB 
 ---
-You need to create your own MongoDB databse instance , follow the Using the MongoDB Atlas UI in this [guide](https://www.mongodb.com/basics/create-database) and make your first databse and name it `Blockchain`.
+You need to create your own MongoDB databse instance , follow the "Using the MongoDB Atlas UI" in this [guide](https://www.mongodb.com/basics/create-database) and make your first databse and name it `Blockchain`.
 
 
 ## Installation Step
@@ -67,7 +67,7 @@ PRIVATEKEY=[add a random 16 deigit secret]
 
 6. Now login into you MongoB account and create a user for the cluster and then click on the Connect ![Alt text](/images//mongodb.jpg) and click on drivers option and copy this URL ![Alt text](/images//url.png) now in .env folder created in step 4 add this 
 ```sh
-CONNECTION_URL=mongodb+srv://admin-siddharth:<password>@cluster0.ziuav.mongodb.net/<your database name here Blockchain>?retryWrites=true&w=majority
+CONNECTION_URL=mongodb+srv://admin-siddharth:<password>@cluster0.ziuav.mongodb.net/<your DB name here example Blockchain>?retryWrites=true&w=majority
 ```
 7. Now open terminal with directory as server and run the command below and wait for the `$ server is live`  message.
 ```sh
@@ -90,7 +90,7 @@ $ npm i
 $ npm start
 ```
 
-11. A website opens on(http://localhost:3000/login).Now in Metamask link the ganache 1st account using its private key and organise the election
+11. A website opens on(http://localhost:3000/login). Now in Metamask link the ganache 1st account using its private key and organise the election
 
 12. Mkae sure to change the metamask account when logging in as a new user.
 
